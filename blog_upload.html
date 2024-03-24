@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<body>
+  <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script> <!--add-->
+  <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script> <!--add-->
+<h1>The textarea element</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .image-upload {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .image-upload input[type="file"] {
+            display: none;
+        }
+
+        .image-upload label {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Your Post</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Title:</label>
+                <input type="text" id="name" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="module" id="content" required></textarea>
+                <script>  
+                  CKEDITOR.replace('content');  // textarea id and script id should be same.
+              </script>  <!--add-->
+            </div>
+            <div class="form-group image-upload">
+                <input type="file" id="image" name="image" accept="image/*">
+                <label for="image">Upload Image</label>
+                <img class="image-preview" id="image-preview" src="" alt="Image Preview">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Show image preview on file input change
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('image-preview');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script> <!--add-->
+</body>
+</html>

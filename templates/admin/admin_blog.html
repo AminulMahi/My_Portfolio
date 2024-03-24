@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/admin/style.css' %}">
+    <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script> <!--add-->
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script> <!--add-->
+    <title>Admin Dashboard | AminulMahi</title>
+</head>
+<style>
+    /* body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+    } */
+
+    .blog_container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin-top: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .image-upload {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .image-upload input[type="file"] {
+        display: none;
+    }
+
+    .image-upload label {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    .image-preview {
+        max-width: 100%;
+        height: auto;
+    }
+
+    button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    /* Style for table header */
+    th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+    /* Style for table rows */
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Style for table cells */
+    td, th {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    } 
+</style>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <img src="{% static '/admin/images/logo.png' %}">
+                    <h2>Aminul<span class="danger">Mahi</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/admin/" ><span class="material-icons-sharp">dashboard</span><h3>Dashboard</h3></a>
+                <a href="#"><span class="material-icons-sharp">person_outline</span><h3>Users</h3></a>
+                <a href="/blog/" class="active"><span class="material-icons-sharp">receipt_long</span><h3>Blog</h3></a>
+                <a href="#"><span class="material-icons-sharp">insights</span><h3>Analytics</h3></a>
+                <a href="#"><span class="material-icons-sharp">mail_outline</span><h3>Tickets</h3></a>
+                <a href="#"><span class="material-icons-sharp">inventory</span><h3>Sale List</h3></a>
+                <a href="#"><span class="material-icons-sharp">report_gmailerrorred</span><h3>Reports</h3></a>
+                <a href="#"><span class="material-icons-sharp">settings</span><h3>Settings</h3></a>
+                <a href="/"><span class="material-icons-sharp">add</span><h3>Main page</h3></a>
+                <a href="{% url 'logout' %}"><span class="material-icons-sharp">logout</span><h3>Logout</h3></a>
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+
+        <!-- Main Content -->
+        <main>
+            <h1>Upload your blog here.</h1>
+            <!--  Blog uploading section  -->
+            <div class="blog_container">
+                <h2>Upload Your Post</h2>
+                <form action="{% url 'insert_blog' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="name">Title:</label>
+                        <input type="text" id="name" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Author:</label>
+                        <input type="text" id="name" name="author" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Date:</label>
+                        <input type="date" id="name" name="date" value="{{placement.date}}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea name="description" id="content" required></textarea>
+                        <script>  
+                          CKEDITOR.replace('content');  // textarea id and script id should be same.
+                      </script>  <!--add-->
+                    </div>
+
+                    <div class="form-group image-upload">
+                        <input type="file" id="image" name="image" accept="image/*">
+                        <label for="image">Upload Image</label>
+                        <img class="image-preview" id="image-preview" src="" alt="Image Preview">
+                    </div>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <!-- End of Analyses -->
+            <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>Images</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in all_blog_data %}
+                  <tr>
+                    <td>{{i.title}}</td>
+                    <td>{{i.date}}</td>
+                    <td style="font-size: 0.9rem;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin: 20px 0px;"  >{{i.description}}</td>
+                    <td>{{i.author}}</td>
+                    <td><img width="150px" src="/media/{{i.image}}" alt="image-not-found"></td>
+                    <td>
+                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><button type="button" class="mr-3 btn btn-primary">Edit</button></a>
+                      <a href="{% url 'delete_blog' i.id %}"><button type="button" class="btn btn-primary">Delete</button></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </main>
+        <!-- End of Main Content -->
+
+        
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <span class="material-icons-sharp">
+                        menu
+                    </span>
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey, <b>Aminul</b></p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{% static '/admin/images/admin_profile.jpg' %}">
+                    </div>
+                </div>
+
+            </div>
+            <!-- End of Nav -->
+
+            <div class="user-profile">
+                <div class="logo">
+                    <img src="{% static '/admin/images/logo.png' %}">
+                    <h2>Aminul Mahi</h2>
+                    <p>Fullstack Web Developer</p>
+                </div>
+            </div>
+
+            <div class="reminders">
+                <div class="header">
+                    <h2>Reminders</h2>
+                    <span class="material-icons-sharp">
+                        notifications_none
+                    </span>
+                </div>
+
+                <div class="notification">
+                    <div class="icon">
+                        <span class="material-icons-sharp">
+                            volume_up
+                        </span>
+                    </div>
+                    <div class="content">
+                        <div class="info">
+                            <h3>Workshop</h3>
+                            <small class="text_muted">
+                                08:00 AM - 12:00 PM
+                            </small>
+                        </div>
+                        <span class="material-icons-sharp">
+                            more_vert
+                        </span>
+                    </div>
+                </div>
+
+                <div class="notification deactive">
+                    <div class="icon">
+                        <span class="material-icons-sharp">
+                            edit
+                        </span>
+                    </div>
+                    <div class="content">
+                        <div class="info">
+                            <h3>Workshop</h3>
+                            <small class="text_muted">
+                                08:00 AM - 12:00 PM
+                            </small>
+                        </div>
+                        <span class="material-icons-sharp">
+                            more_vert
+                        </span>
+                    </div>
+                </div>
+
+                <div class="notification add-reminder">
+                    <div>
+                        <span class="material-icons-sharp">
+                            add
+                        </span>
+                        <h3>Add Reminder</h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--data table-->
+           
+        </div>
+        
+        <script>
+            // Show image preview on file input change
+            const imageInput = document.getElementById('image');
+            const imagePreview = document.getElementById('image-preview');
+    
+            imageInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        </script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script> <!--add-->
+    <script src="{% static '/admin/index.js' %}"></script>
+
+    
+</body>
+
+</html>

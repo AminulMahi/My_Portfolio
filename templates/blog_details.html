@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <title>Blog Details</title>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap');
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+ .nav {
+    position: fixed; /* Make the navbar sticky */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(208, 18, 50);
+    color: #fff;
+    padding: 15px 80px;
+}
+
+
+.logo {
+    font-size: 24px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+}
+
+.nav-links li {
+    margin: 0 10px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #57a7ff;
+}
+
+.burger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.line1, .line2, .line3 {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 3px 0;
+    transition: transform 0.4s;
+}
+
+/* Media query for responsiveness */
+ @media screen and (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: crimson;
+        text-align: center;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .burger.active .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .burger.active .line2 {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .burger.active .line3 {
+        transform: scale(0);
+    }
+} 
+body {
+    font-family: arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+.row{
+    display: flex;
+    justify-content: center;
+}
+
+.header{
+    margin-top: 60px;
+    padding: 30px;
+    font-size: 40px;
+    text-align: center;
+    background-color: white;
+}
+.leftcolum{
+    float: left;
+    width: 75%;
+}
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  
+}
+.card {
+   background-color: white;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+
+</style>
+<body>
+    <div class="nav">
+        <div class="logo">Your Logo</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="/blog">Blogs</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+    </div>
+</div>
+
+    <div class="header">
+        <h2>Blog Name</h2>
+    </div>
+    <div class="row">
+        <div class="leftcolum">
+            <div class="card">
+                <h2 style="margin: 10px;">{{blog_detail.title}}</h2>
+                <h5 style="margin: 10px;">Published by .{{blog_detail.author}}, {{blog_detail.date}}</h5>
+                <img class="fakeimg" style="height:200px; margin: 5px; width: 50%;" src="/media/{{blog_detail.image}}"></img>
+                
+                <p style="margin: 10px;">{{blog_detail.description | safe}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <h2>Footer</h2>
+      </div>
+
+    <script>
+        const burger = document.querySelector(".burger");
+        const navLinks = document.querySelector(".nav-links");
+    
+        burger.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+            burger.classList.toggle("active");
+        });
+    
+        </script>
+</body>
+</html>
